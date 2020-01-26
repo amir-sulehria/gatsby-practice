@@ -1,0 +1,33 @@
+1-simply create pages
+2-if u want to have layout then create it and wrap the content inside it
+3-if u want to add better graphql editor then istall a pacakge and make .env.development file go to scripts in package.json and 
+configure it
+4-if u want to get data from mardown then install api from gatsby for this and then simply using query get data
+5-now if u want to create a dynamic page, then follow below steps
+(
+1st step will be to create slug, extract name from file name
+2nd step will be to create blog page template
+3rd is to create new page for each post
+
+for extracting slug create new file in root directory named gatsby-node.js, it's gatsbynode config file which allow us to tap into
+different node api that gatsby exposes, that's what we're going to use for above mentioned 3 steps.
+u can headup to gatsby docs and there u'll find node api, we'll use oncreatenode (node is nothing but a data structure to store data)
+we'll export the function and it'll run when supposed to. if u console log the node and rerun app u'll see many objects, the
+only thing from that object that we're concerned is internal->type, SitePage is default name, now find out the type that u're looking
+for(MarkDownRemark) from object, now look for field filepath and extract name of file from it, we'll use node package 'path' to 
+extract package, now use create node field to actually add new field to node, this field will be added in fields. 1st step completed.
+now lets create templates and create new folder for them to differentiate them from components, now create a file inside it and
+and make a component. for 3rd steps we'll again use 3rd package library, createPages,go to gatsby-node, it gives everything needed to 
+generate pages. in arg we'll have access to graphql to fetch data, from actions we'l get access to createPage. this graphql object
+is different from what we used in past, the create page function return a promise so use async await. 3rd arg to create page is 
+context that's a object and we pass it down to template, since we only need slug so pass it. now lets see how can we access passed
+data in template again through graphql but this time using markDownRemark. now in this case we'll not use useStaticQuery in 
+case of template files, instead of calling usestaticquery we'll define our query separately and export it and the reason is
+that there's no way of accessing context which contains slug, now when we write export keyword gatsby will pass dsata to props.
+in order to set our html from markdown we'll use dangerouslysetinnerhtml. all our 3 steps completed. )
+
+6-now add images, for this we need to install another package 'gatsby-plugin-sharp' and 'gatsby-remark-images' and 
+'gatsby-remark-relative-images', 2nd one will allow us to render image using md syntax and 3rd one will allow to use
+relative path. after installing do configuration in gatsby-config
+
+7- now add cms, we'll be using cms named 'Contentful', but same principals apply for others cms.
